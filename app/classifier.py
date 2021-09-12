@@ -5,30 +5,62 @@ from app.models import InputDocument, ModelResponse
 
 
 class NER:
-    """Pipe document through a spacy model and return entities.
-    
-    
+    """Pipe Document through a spacy model and return entities.
+
+
     Usage
     -----
     >>> nlp = spacy.load("path/to/model")
-    >>> document = "Margarita Simonyan, editor-in-chief of Russia's overseas propaganda channel, RT, had ..."
+    >>> snippet = '''
+    Secretary of State Mike Pompeo and Defense Secretary Mark T. Esper met with
+    President Trump at the White House following the attack. The president said
+    he will make a statement Wednesday morning...
+    '''
+    >>> document = InputDocument(text=snippet)
     >>> ner = NER(nlp=nlp, document=document)
     >>> ner.extract_entities()
     {
-        "doc_id": "439d2be6c8bf421c8cf74d8f8d070f69", 
-        "document": "Margarita Simonyan, editor-in-chief of Russia's overseas propaganda channel, RT, had ...",
+        "doc_id": "a3a32917aa49455b8b117a01806c75ed",
+        "text": "Secretary of State Mike Pompeo and Defense Secretary Mark...",
         "entities": {
-            "0": {
-                "name": "Simonyan", 
-                "label": "PERSON", 
+            "0-PERSON-Pompeo": {
+                "name": "Pompeo",
+                "label": "PERSON",
                 "matches": [
-                    {"start": 10, "end": 18, "text": "Simonyan"}
+                    {
+                        "start": 24,
+                        "end": 30,
+                        "text": "Pompeo"
+                    }
+                ]
+            },
+            "0-PERSON-Esper": {
+                "name": "Esper",
+                "label": "PERSON",
+                "matches": [
+                    {
+                        "start": 61,
+                        "end": 66,
+                        "text": "Esper"
+                    }
+                ]
+            },
+            "0-PERSON-Trump": {
+                "name": "Trump",
+                "label": "PERSON",
+                "matches": [
+                    {
+                        "start": 86,
+                        "end": 91,
+                        "text": "Trump"
+                    }
                 ]
             }
         }
     }
     """
-    def __init__(self, nlp: spacy.language.Language, document: InputDocument):
+
+    def __init__(self, nlp: spacy.language.Language, document: InputDocument) -> None:
         self.nlp = nlp
         self.document = self.nlp(document.text)
         self.doc_id = uuid.uuid4()
@@ -41,10 +73,9 @@ class NER:
                 entities[ent_id] = {
                     "name": ent.text,
                     "label": ent.label_,
-                    "matches": []
+                    "matches": [],
                 }
             entities[ent_id]["matches"].append(
                 {"start": ent.start_char, "end": ent.end_char, "text": ent.text}
             )
         return {"doc_id": self.doc_id.hex, "text": self.document.text, "entities": entities}
-
