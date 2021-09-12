@@ -12,12 +12,13 @@ from app.classifier import NER
 root = Path(__file__).resolve().parent
 
 nlp = spacy.load(root / "models")
-app = FastAPI(title="MENA policies NER classifier", version="1.0")
+app = FastAPI(title="MENA policies PERSON classifier", version="1.0")
 
 
 @app.get("/", include_in_schema=False)
 def docs_redirect():
     return RedirectResponse(url="/docs")
+
 
 @app.post("/entities", response_model=ModelResponse, tags=["NER"])
 async def extract_entities(body: InputDocument):
