@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import uuid
 import spacy
-from app.models import InputDocument
+from app.models import InputDocument, ModelResponse
 
 
 class NER:
@@ -33,10 +33,10 @@ class NER:
         self.document = self.nlp(document.text)
         self.doc_id = uuid.uuid4()
 
-    def extract_entities(self):
+    def extract_entities(self) -> ModelResponse:
         entities = {}
         for ent in self.document.ents:
-            ent_id = ent.kb_id
+            ent_id = f"{ent.kb_id}-{ent.label_}-{ent.text}"
             if ent_id not in entities:
                 entities[ent_id] = {
                     "name": ent.text,
