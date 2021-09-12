@@ -4,6 +4,14 @@ This repository contains REST API powered by `FastAPI` that
 uses custom `spacy` model (trained with `prodigy`) to extract entities
 from a given document.  
 
+---
+
+![Docs](images/docs.png "Docs")
+
+![Entities](images/entities.png "Entities")
+
+---
+
 ## Usage
 
 To use or contribute to this repository, first checkout the code. 
