@@ -78,4 +78,6 @@ class NER:
             entities[ent_id]["matches"].append(
                 {"start": ent.start_char, "end": ent.end_char, "text": ent.text}
             )
-        return {"doc_id": self.doc_id.hex, "text": self.document.text, "entities": entities}
+        return ModelResponse(
+            doc_id=self.doc_id.hex, text=self.document.text, entities=entities
+        )
