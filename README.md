@@ -1,7 +1,7 @@
 # base-classifier
 
-This repository contains REST API powered by `FastAPI` that
-uses custom `spacy` model (trained with `prodigy`) to extract entities
+This repository contains REST API powered by *FastAPI* that
+uses custom *spaCy* model (trained with *Prodigy*) to extract entities
 from a given document.  
 
 ---
@@ -24,7 +24,7 @@ $ . env/bin/activate
 $ pip install -r requirements.txt
 ```
 
-Run uvicorn either directly:
+Put spacy model into [`models`](app/models) directory, and either run `uvicorn` directly:
 
 ```console
 $ uvicorn app.main:app --host 0.0.0.0 --reload --debug
